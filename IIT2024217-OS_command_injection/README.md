@@ -25,7 +25,7 @@ Open http://localhost:3000.
 | `public/index.html` | UI and the full write-up (a)-(e). |
 | `public/app.js`, `public/style.css` | Minimal front end. |
 
-## What to show in the video / viva
+## Video is based on:
 
 1. **Vulnerable endpoint** — ping `127.0.0.1`, then inject `127.0.0.1; id`
    (or `127.0.0.1 && cat /etc/passwd`). The injected command's output comes back.
