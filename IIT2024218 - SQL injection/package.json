@@ -1,0 +1,14 @@
+{
+  "name": "sqli-login-demo",
+  "version": "1.0.0",
+  "description": "SQL Injection - Authentication Bypass demo (Lab 4, IT-30001)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.9",
+    "express": "^4.19.2",
+    "mysql2": "^3.11.0"
+  }
+}
