@@ -13,12 +13,14 @@ injection**, **Cross-Site Scripting (XSS)**, and **Cross-Site Request Forgery
 
 ## Ownership Declaration (Table 3)
 
+## Ownership
+
 | Member name | Roll number | Category | Variant implemented |
-| Nitya Varma | IIT2024217 | OS Command Injection |In-band (command output returned)|
-|Adabala Sridhar |IIT2024218 |SQL injection |Authentication bypass |
-| | | OS command injection | |
-|Shon Waghchoure |IIT2024247 | Cross-Site Scripting (XSS) |Reflected XSS |
-| | | Cross-Site Request Forgery (CSRF) | |
+| --- | --- | --- | --- |
+| Adabala Sridhar | IIT2024218 | SQL injection | Authentication bypass |
+| Nitya Varma | IIT2024217 | OS command injection | In-band (command output returned) |
+| Shon Waghchoure | IIT2024247 | Cross-Site Scripting (XSS) | Reflected XSS |
+| Vandita |  | Cross-Site Request Forgery (CSRF) | POST-based forged action (auto-submitting form) |
 
 ## Repository structure
 Each folder contains:
