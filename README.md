@@ -14,7 +14,7 @@ injection**, **Cross-Site Scripting (XSS)**, and **Cross-Site Request Forgery
 ## Ownership Declaration (Table 3)
 
 | Member name | Roll number | Category | Variant implemented |
-|---|---|---|---|
+| Nitya Varma | IIT2024217 | OS Command Injection |In-band (command output returned)|
 |Adabala Sridhar |IIT2024218 |SQL injection |Authentication bypass |
 | | | OS command injection | |
 |Shon Waghchoure |IIT2024247 | Cross-Site Scripting (XSS) |Reflected XSS |
