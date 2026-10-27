@@ -13,8 +13,6 @@ injection**, **Cross-Site Scripting (XSS)**, and **Cross-Site Request Forgery
 
 ## Ownership Declaration (Table 3)
 
-## Ownership
-
 | Member name | Roll number | Category | Variant implemented |
 | --- | --- | --- | --- |
 | Adabala Sridhar | IIT2024218 | SQL injection | Authentication bypass |
