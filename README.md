@@ -15,7 +15,7 @@ injection**, **Cross-Site Scripting (XSS)**, and **Cross-Site Request Forgery
 
 | Member name | Roll number | Category | Variant implemented |
 |---|---|---|---|
-| | | SQL injection | |
+|Adabala Sridhar |IIT2024218 |SQL injection |Authentication bypass |
 | | | OS command injection | |
 |Shon Waghchoure |IIT2024247 | Cross-Site Scripting (XSS) |Reflected XSS |
 | | | Cross-Site Request Forgery (CSRF) | |
