@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <title>Demo Bank — Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">Demo Bank</span>
+    <span class="env">local · transfer-console</span>
+  </div>
+  <div class="wrap">
+    <div class="panel">
+      <h1>Account overview</h1>
+
+      <div class="field">
+        <label>Signed in as</label>
+        <div class="mono">{{ username }}</div>
+      </div>
+
+      <div class="balance-label">Available balance</div>
+      <div class="balance-value">{{ balance }}</div>
+
+      <div class="status-panel row">
+        <div class="status">
+          <span class="dot {{ 'dot-safe' if csrf_protection else 'dot-danger' }}"></span>
+          csrf protection: {{ "enabled" if csrf_protection else "disabled" }}
+        </div>
+        <form method="POST" action="/toggle-protection" style="margin:0;">
+          <button type="submit" class="ghost">
+            {{ "disable it" if csrf_protection else "enable it" }}
+          </button>
+        </form>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <p class="notice {{ category }}">{{ message }}</p>
+        {% endfor %}
+      {% endwith %}
+
+      <h2>Transfer funds</h2>
+      <form method="POST" action="/transfer">
+        {% if csrf_protection %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        {% endif %}
+        <div class="field">
+          <label for="to">Recipient</label>
+          <select id="to" name="to">
+            {% for u in other_users %}<option value="{{ u }}">{{ u }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="amount">Amount</label>
+          <input id="amount" name="amount" type="text" value="50">
+        </div>
+        <button type="submit">Send transfer</button>
+      </form>
+
+      <div class="footer-row">
+        <a class="quiet" href="/logout">Log out</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
