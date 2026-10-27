@@ -39,7 +39,7 @@ Open http://localhost:3000.
 
 | Member name | Roll number | Category | Variant implemented |
 |-------------|-------------|----------|---------------------|
-|  |  | OS command injection | In-band (command output returned) |
+| Nitya Varma  | IIT2024217 | OS command injection | In-band (command output returned) |
 
 Fill this in for the member who built this variant, and add the other members'
 rows for their categories.
