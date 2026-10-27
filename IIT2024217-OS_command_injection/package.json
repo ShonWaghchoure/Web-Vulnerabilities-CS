@@ -1,0 +1,14 @@
+{
+  "name": "os-command-injection-demo",
+  "version": "1.0.0",
+  "description": "Intentionally vulnerable in-band OS command injection demo with mitigation (IIIT Allahabad, Cyber Security IT-30001).",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}

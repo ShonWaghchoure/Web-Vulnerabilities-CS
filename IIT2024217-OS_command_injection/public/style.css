@@ -1,0 +1,129 @@
+:root {
+  --ink: #1a1a1a;
+  --muted: #6b6b6b;
+  --hair: #e6e4e0;
+  --code-bg: #f7f6f4;
+  --code-bd: #e4e2dd;
+  --note-bg: #faf9f7;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: Charter, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 17px;
+  line-height: 1.62;
+  color: var(--ink);
+  background: #fff;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 20px 96px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0 0 .4rem;
+}
+
+h2 {
+  font-size: 1.22rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin-top: 2.8rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--hair);
+}
+
+h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin: 1.6rem 0 .3rem;
+}
+
+p { margin: .6rem 0; }
+
+a { color: var(--ink); text-decoration-color: #bdbab4; text-underline-offset: 2px; }
+a:hover { text-decoration-color: var(--ink); }
+
+nav {
+  margin: 1.4rem 0;
+  font-size: .82rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+nav a { margin-right: 20px; color: var(--muted); text-decoration: none; }
+nav a:hover { color: var(--ink); }
+
+code {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: .86em;
+  background: var(--code-bg);
+  border: 1px solid var(--code-bd);
+  border-radius: 3px;
+  padding: .05em .35em;
+}
+
+pre {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: .82rem;
+  line-height: 1.5;
+  background: var(--code-bg);
+  border: 1px solid var(--code-bd);
+  border-radius: 4px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+pre code { background: none; border: 0; padding: 0; }
+
+form { margin: 14px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+
+input[type=text] {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: .9rem;
+  flex: 1 1 320px;
+  min-width: 0;
+  padding: 9px 11px;
+  color: var(--ink);
+  border: 1px solid #cbc8c2;
+  border-radius: 4px;
+  background: #fff;
+}
+input[type=text]:focus { outline: none; border-color: var(--ink); }
+
+button {
+  font-family: inherit;
+  font-size: .92rem;
+  padding: 9px 18px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+button:hover { background: var(--ink); color: #fff; }
+
+.out { min-height: 2.6rem; color: #111; }
+
+.note {
+  background: var(--note-bg);
+  border: 1px solid var(--hair);
+  border-left: 2px solid var(--ink);
+  border-radius: 3px;
+  padding: 12px 14px;
+  font-size: .92rem;
+  color: #3a3a3a;
+}
+
+table { border-collapse: collapse; width: 100%; margin: .6rem 0; font-size: .94rem; }
+th, td { border: 1px solid var(--hair); padding: 9px 11px; text-align: left; vertical-align: top; }
+th { background: var(--note-bg); font-weight: 600; }
+
+em { color: var(--muted); font-style: italic; }
