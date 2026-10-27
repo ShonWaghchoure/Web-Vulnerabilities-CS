@@ -18,7 +18,7 @@ injection**, **Cross-Site Scripting (XSS)**, and **Cross-Site Request Forgery
 | Adabala Sridhar | IIT2024218 | SQL injection | Authentication bypass |
 | Nitya Varma | IIT2024217 | OS command injection | In-band (command output returned) |
 | Shon Waghchoure | IIT2024247 | Cross-Site Scripting (XSS) | Reflected XSS |
-| Vandita |  | Cross-Site Request Forgery (CSRF) | POST-based forged action (auto-submitting form) |
+| Vandita | IIT2024228 | Cross-Site Request Forgery (CSRF) | POST-based forged action (auto-submitting form) |
 
 ## Repository structure
 Each folder contains:
